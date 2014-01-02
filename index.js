@@ -38,10 +38,10 @@ module.exports = function(options) {
         });
         build.on('close', function(code) {
             // FIXME: inspect code to see if success or not
-            // console.log("done", code)
             defer.resolve(new Resource({
+                type:     'javascript',
                 filename: 'lodash.js',
-                data: output
+                data:     output
             }));
         });
 

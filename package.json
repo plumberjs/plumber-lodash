@@ -1,10 +1,10 @@
 {
   "name": "plumber-lodash",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lodash generator operation for Plumber pipelines",
   "main": "index",
   "dependencies": {
-    "plumber": "~0.1.3",
+    "plumber": "~0.1.13",
     "q": "~0.9.7",
     "lodash-cli": "~2.4.1"
   },
