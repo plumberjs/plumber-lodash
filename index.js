@@ -28,9 +28,9 @@ module.exports = function(options) {
         var args = [includes, '--stdout', '--debug', 'exports=amd', 'strict'];
 
         var build = spawn(builder, args);
-        var output;
+        var output = '';
         build.stdout.on('data', function(data) {
-            output = String(data);
+            output += String(data);
         });
         build.stderr.on('data', function(data) {
             // FIXME: reject defer?
