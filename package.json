@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/theefer/plumber-lodash.git"
+    "url": "git://github.com/plumberjs/plumber-lodash.git"
   },
   "keywords": [
     "build",
@@ -24,6 +24,6 @@
   "author": "Sébastien Cevey <seb@cine7.net>",
   "license": "GPL",
   "bugs": {
-    "url": "https://github.com/theefer/plumber-lodash/issues"
+    "url": "https://github.com/plumberjs/plumber-lodash/issues"
   }
 }
