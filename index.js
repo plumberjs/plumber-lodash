@@ -1,26 +1,16 @@
+var operation = require('plumber').operation;
 var Resource = require('plumber').Resource;
-var appendResources = require('plumber').appendResources;
 
 var pkg = require('lodash-cli/package.json');
 var bin = pkg.bin.lodash;
 var builder = require.resolve('lodash-cli/' + bin);
 
-var q = require('q');
+var highland = require('highland');
 var spawn = require('child_process').spawn;
 
 
-module.exports = function(options) {
-    options = options || [];
-
-    return appendResources(function() {
-        var defer = q.defer();
-
-        // FIXME: default options
-        var defaultOptions = {
-            modifier: 'strict',
-            exports: 'amd'
-        };
-
+function lodash(options) {
+    return highland(function(push, next) {
         // --stdout (instead of --output)
         // --debug (not minified)
         // --source-map
@@ -33,18 +23,32 @@ module.exports = function(options) {
             output += String(data);
         });
         build.stderr.on('data', function(data) {
-            // FIXME: reject defer?
+            // FIXME: push error?
             console.log("stderr", data);
         });
+        // FIXME: close?? not end?
         build.on('close', function(code) {
             // FIXME: inspect code to see if success or not
-            defer.resolve(new Resource({
+            push(null, new Resource({
                 type:     'javascript',
                 filename: 'lodash.js',
                 data:     output
             }));
+            push(null, highland.nil);
         });
+    });
+}
 
-        return defer.promise;
+module.exports = function(options) {
+    options = options || [];
+
+    return operation.concat(function() {
+        // FIXME: use default options
+        var defaultOptions = {
+            modifier: 'strict',
+            exports: 'amd'
+        };
+
+        return lodash(options);
     });
 };
