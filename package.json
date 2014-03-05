@@ -4,7 +4,7 @@
   "description": "Lodash generator operation for Plumber pipelines",
   "main": "index",
   "dependencies": {
-    "plumber": "git://github.com/plumberjs/plumber.git#highland",
+    "plumber": "~0.3.0",
     "highland": "~1.16.2",
     "lodash-cli": "~2.4.1"
   },
