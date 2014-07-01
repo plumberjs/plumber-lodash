@@ -31,6 +31,7 @@ function lodash(options) {
         // FIXME: close?? not end?
         build.on('close', function(code) {
             // FIXME: inspect code to see if success or not
+            // FIXME: add sourcemap
             observer.onNext(new Resource({
                 type:     'javascript',
                 filename: 'lodash.js',
