@@ -1,21 +1,23 @@
 var operation = require('plumber').operation;
 var Resource = require('plumber').Resource;
+var Rx = require('plumber').Rx;
 
 var pkg = require('lodash-cli/package.json');
 var bin = pkg.bin.lodash;
 var builder = require.resolve('lodash-cli/' + bin);
 
-var highland = require('highland');
 var spawn = require('child_process').spawn;
 
 
 function lodash(options) {
-    return highland(function(push, next) {
+    return Rx.Observable.create(function(observer) {
         // --stdout (instead of --output)
         // --debug (not minified)
         // --source-map
-        var includes = 'include=' + (options.include || []).join(',');
-        var args = [includes, '--stdout', '--debug', 'exports=amd', 'strict'];
+        var args = ['--stdout', '--debug', 'exports=amd', 'strict'];
+        if (options.include) {
+            args.push('include=' + options.include.join(','));
+        }
 
         var build = spawn(builder, args);
         var output = '';
@@ -29,12 +31,12 @@ function lodash(options) {
         // FIXME: close?? not end?
         build.on('close', function(code) {
             // FIXME: inspect code to see if success or not
-            push(null, new Resource({
+            observer.onNext(new Resource({
                 type:     'javascript',
                 filename: 'lodash.js',
                 data:     output
             }));
-            push(null, highland.nil);
+            observer.onCompleted();
         });
     });
 }
